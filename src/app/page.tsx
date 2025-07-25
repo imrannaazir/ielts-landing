@@ -1,7 +1,8 @@
 import { fetchIELTSCourse } from "@/actions";
-import { ApiResponse } from "@/types/course";
+import { ApiResponse } from "@/types";
 import { Metadata } from "next";
 import Hero from "./components/hero";
+import TrailerAndCTA from "./components/trailer-cta";
 export const metadata: Metadata = {
   title: "Best IELTS Preparation Course by Munzereen Shahid [2025]",
   description:
@@ -23,6 +24,14 @@ export default async function Home() {
         title={courseData.data.title}
         description={courseData.data.description}
       />
+      <TrailerAndCTA media={courseData.data.media} />
+    <div className="min-h-screen"></div>
+    
+    <div className="min-h-screen"></div>
+    <div className="min-h-screen"></div>
+    <div className="min-h-screen"></div>
+    <div className="min-h-screen"></div>
+    <div className="min-h-screen"></div>
     </main>
   );
 }
