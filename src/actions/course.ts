@@ -5,7 +5,6 @@ import { env } from "@/lib/env";
 export async function fetchIELTSCourse(lang = "en") {
   try {
     const url = `${env.apiUrl}/products/ielts-course?lang=${lang}`;
-    console.log({ url });
 
     const response = await fetch(url, {
       headers: {

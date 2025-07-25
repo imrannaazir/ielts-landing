@@ -6,7 +6,7 @@ export interface Media {
   thumbnail_url: string;
 }
 
-export interface Checklist {
+export interface ChecklistItem {
   color: string;
   icon: string;
   id: string;
@@ -149,7 +149,7 @@ export interface CourseData {
   old_info: OldInfo;
   start_at: string;
   media: Media[];
-  checklist: Checklist[];
+  checklist: ChecklistItem[];
   seo: any[];
   cta_text: CtaText;
   sections: Section[];
