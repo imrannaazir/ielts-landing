@@ -3,11 +3,12 @@ import Container from "@/components/layout/container";
 import { ApiResponse } from "@/types";
 import { Metadata } from "next";
 import CourseInstructor from "./components/course-instructor";
+import FeatureExplanations from "./components/feature-explanations";
 import Hero from "./components/hero";
 import HowCourseLaidOut from "./components/how-course-laid-out";
 import TrailerAndCTA from "./components/trailer-cta";
 import WhatWillLearn from "./components/what-will-learn";
-import FeatureExplanations from "./components/feature-explanations";
+import CourseDetails from "./components/course-details";
 export const metadata: Metadata = {
   title: "Best IELTS Preparation Course by Munzereen Shahid [2025]",
   description:
@@ -34,6 +35,7 @@ export default async function Home() {
   const featureExplanations = courseData.data.sections.find(
     (item) => item.type === "feature_explanations"
   );
+  const detailsData = courseData.data.sections.find((item)=>item.type==='about')
   return (
     <main>
       <Hero
@@ -45,7 +47,8 @@ export default async function Home() {
           <CourseInstructor instructor={instructor!} />
           <HowCourseLaidOut features={featuresData!} />
           <WhatWillLearn section={pointData!} />
-          <FeatureExplanations section={featureExplanations!}/>
+          <FeatureExplanations section={featureExplanations!} />
+          <CourseDetails section={detailsData!}/>
         </section>
         <TrailerAndCTA
           media={courseData.data.media}
@@ -53,13 +56,6 @@ export default async function Home() {
           ctaText={courseData.data.cta_text.name}
         />
       </Container>
-      <div className="min-h-screen"></div>
-
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
     </main>
   );
 }
