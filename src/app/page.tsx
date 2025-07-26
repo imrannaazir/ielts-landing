@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import CourseInstructor from "./components/course-instructor";
 import Hero from "./components/hero";
 import TrailerAndCTA from "./components/trailer-cta";
+import HowCourseLaidOut from "./components/how-course-laid-out";
 export const metadata: Metadata = {
   title: "Best IELTS Preparation Course by Munzereen Shahid [2025]",
   description:
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const courseData: ApiResponse = await fetchIELTSCourse();
 const instructor = courseData.data.sections.find((item)=>item.type === 'instructors')
+const featuresData = courseData.data.sections.find((item)=>item.type==='features')
   return (
     <main>
       <Hero
@@ -29,6 +31,7 @@ const instructor = courseData.data.sections.find((item)=>item.type === 'instruct
       <Container className=" w-full flex justify-between gap-4 md:gap-12">
         <section className="w-full">
           <CourseInstructor  instructor={instructor!}/>
+          <HowCourseLaidOut features={featuresData!}/>
         </section>
         <TrailerAndCTA
           media={courseData.data.media}
