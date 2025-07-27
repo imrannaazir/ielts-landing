@@ -8,7 +8,6 @@ interface FeatureExplanationsProps {
   section: Section;
 }
 const FeatureExplanations: FC<FeatureExplanationsProps> = ({ section }) => {
-  console.log(section);
   return (
     <section className="space-y-3 mt-10">
       <h2 className="text-xl font-semibold">{section.name}</h2>
@@ -18,19 +17,21 @@ const FeatureExplanations: FC<FeatureExplanationsProps> = ({ section }) => {
             <div
               key={item.id}
               className={cn(
-                "flex  justify-between gap-3",
+                "flex  flex-col md:flex-row justify-between gap-3",
                 index === 0 && "pb-5"
               )}
             >
               <div className="space-y-2">
-                <h3>{item.title}</h3>
+                <h3 className="text-sm md:text-base font-medium leading-[30px]">{item.title}</h3>
                 <ul className="space-y-2">
                   {item.checklist.map((point, index) => (
                     <li key={index} className="flex gap-5">
                       <div className="">
                         <Check className="text-[#6294F8]" />
                       </div>
-                      <span>{point}</span>
+                      <span className="text-sm  leading-6 text-[#4B5563] md:text-base">
+                        {point}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -40,6 +41,7 @@ const FeatureExplanations: FC<FeatureExplanationsProps> = ({ section }) => {
                 alt={item.title}
                 width={250}
                 height={250}
+                className="w-full md:w-[250px]"
               />
             </div>
           ))}

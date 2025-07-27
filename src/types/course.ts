@@ -118,6 +118,7 @@ export interface FaqValue {
   question: string;
 }
 
+export type Language = 'en' |'bn';
 export interface Section {
   type: string;
   name: string;

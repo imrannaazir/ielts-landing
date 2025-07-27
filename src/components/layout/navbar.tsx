@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Container from "./container";
+import ToggleLanguage from "./toggle-language";
 
 const Navbar = () => {
   return (
@@ -18,7 +19,7 @@ const Navbar = () => {
         <div>middle</div>
 
         {/* last nav */}
-        <div>end</div>
+        <ToggleLanguage />
       </Container>
     </nav>
   );
