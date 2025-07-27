@@ -1,67 +1,59 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 import { Media } from "@/types";
-import { FC } from "react";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import Image from "next/image";
+import { FC, useEffect, useState } from "react";
 type YoutubeVideoCarouselProps = {
   mediaData: Media[];
 };
 const YoutubeVideoCarousel: FC<YoutubeVideoCarouselProps> = ({ mediaData }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 640px)");
 
- const [selectedIndex, setSelectedIndex] = useState(0);
- const [isPlaying, setIsPlaying] = useState(false);
- const isMobile = useMediaQuery("(max-width: 640px)");
+  const selectedItem = mediaData[selectedIndex];
 
- const selectedItem = mediaData[selectedIndex];
+  const handleThumbnailClick = (index: number) => {
+    setSelectedIndex(index);
+    setIsPlaying(false);
+  };
 
- const handleThumbnailClick = (index: number) => {
-   setSelectedIndex(index);
-   setIsPlaying(false);
- };
+  const handlePlay = () => {
+    if (selectedItem.resource_type === "video") {
+      setIsPlaying(true);
+    }
+  };
 
- const handlePlay = () => {
-   if (selectedItem.resource_type === "video") {
-     setIsPlaying(true);
-   }
- };
+  // Reset playing state when selected index changes
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [selectedIndex]);
 
- // Reset playing state when selected index changes
- useEffect(() => {
-   setIsPlaying(false);
- }, [selectedIndex]);
+  const getImageSrc = (item: Media) => {
+    if (item.resource_type === "image") {
+      return item.resource_value;
+    }
+    return item.thumbnail_url;
+  };
 
- const getImageSrc = (item:Media) => {
-   if (item.resource_type === "image") {
-     return item.resource_value;
-   }
-   return (
-     item.thumbnail_url ||
-     `/placeholder.svg?height=360&width=640&text=Video+Thumbnail`
-   );
- };
-
- const getYouTubeEmbedUrl = (videoId: string) => {
-   return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
- };
+  const getYouTubeEmbedUrl = (videoId: string) => {
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  };
 
   return (
-    <div className="w-full  space-y-3">
+    <div className="w-full  space-y-3 ">
       {/* Main Video/Image Display */}
-      <Card className="relative overflow-hidden p-0 shadow-none aspect-video ">
+      <Card className="relative rounded-none overflow-hidden p-0 shadow-none aspect-video ">
         <div className="relative w-full h-full">
           {isPlaying && selectedItem.resource_type === "video" ? (
             <iframe
@@ -72,7 +64,7 @@ const YoutubeVideoCarousel: FC<YoutubeVideoCarouselProps> = ({ mediaData }) => {
           ) : (
             <>
               <Image
-                src={getImageSrc(selectedItem) || "/placeholder.svg"}
+                src={getImageSrc(selectedItem)}
                 alt="Selected media"
                 fill
                 className="object-cover"
@@ -92,13 +84,27 @@ const YoutubeVideoCarousel: FC<YoutubeVideoCarouselProps> = ({ mediaData }) => {
             </>
           )}
         </div>
+        {/* buttons */}
+        <div className="absolute inset-0  px-3 *:flex *:items-center *:justify-center *:disabled:opacity-60 *:disabled:cursor-not-allowed flex items-center justify-between *:bg-background *:rounded-full   *:aspect-square *:p-1 *:cursor-pointer">
+          <button
+            disabled={selectedIndex === 0}
+            onClick={() => setSelectedIndex(selectedIndex - 1)}
+          >
+            <ChevronLeft className="size-5 text-gray-600" strokeWidth={2.5} />
+          </button>
+          <button
+            disabled={selectedIndex === mediaData.length - 1}
+            onClick={() => setSelectedIndex(selectedIndex + 1)}
+          >
+            <ChevronRight className="size-5 text-gray-600" strokeWidth={2.5} />
+          </button>
+        </div>
       </Card>
 
-      {/* Thumbnail Carousel using shadcn/ui Carousel */}
       <Carousel
         opts={{
           align: "start",
-          loop: true,
+          loop: false,
           slidesToScroll: isMobile ? 1 : 3,
         }}
         className="w-full"
@@ -122,7 +128,7 @@ const YoutubeVideoCarousel: FC<YoutubeVideoCarouselProps> = ({ mediaData }) => {
                 )}
               >
                 <Image
-                  src={getImageSrc(item) || "/placeholder.svg"}
+                  src={getImageSrc(item)}
                   alt={`Thumbnail ${index + 1}`}
                   fill
                   className="object-cover"
@@ -139,10 +145,6 @@ const YoutubeVideoCarousel: FC<YoutubeVideoCarouselProps> = ({ mediaData }) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="flex items-center justify-between mt-2 gap-2 ">
-          <CarouselPrevious className="static translate-y-0 h-8 w-8" />
-          <CarouselNext className="static translate-y-0 h-8 w-8" />
-        </div>
       </Carousel>
     </div>
   );

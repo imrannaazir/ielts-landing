@@ -1,8 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ChecklistItem, Media } from "@/types";
 import { Phone } from "lucide-react";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import YoutubeVideoCarousel from "./youtube-video-carousel";
 interface TrailerAndCTAProps {
   media: Media[];
@@ -14,11 +16,23 @@ const TrailerAndCTA: FC<TrailerAndCTAProps> = ({
   checklist,
   ctaText,
 }) => {
+  const [isSticky, setIsSticky] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 325);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  console.log(isSticky);
+
   return (
-    <section className="w-full md:max-w-[330px] lg:max-w-[400px] order-2 bg-background -mt-[250px]">
-      <div className="md:sticky md:top-[112px]">
-        <div className="md:border">
-          <div className="hidden p-1 md:block">
+    <section className="w-full md:max-w-[330px] lg:max-w-[400px]  -mt-[250px]">
+      <div className={cn(isSticky && "md:sticky md:top-[112px]")}>
+        <div className="md:border bg-background">
+          <div className={cn("hidden md:block p-1 ", isSticky && "md:hidden")}>
             <YoutubeVideoCarousel mediaData={media} />
           </div>
 
@@ -39,7 +53,12 @@ const TrailerAndCTA: FC<TrailerAndCTAProps> = ({
                   </div>
                 </div>
               </div>
-              <Button>{ctaText}</Button>
+              <Button
+                className="border-b-4 rounded-sm border-[#14773b] hover:bg-[#14773b] text-base py-4"
+                size={"lg"}
+              >
+                {ctaText}
+              </Button>
             </div>
           </div>
 
