@@ -76,7 +76,7 @@ const YoutubeVideoCarousel: FC<YoutubeVideoCarouselProps> = ({
               />
               {selectedItem.resource_type === "video" && (
                 <div className="absolute bg-black/40 inset-0 flex items-center justify-center">
-                  <button onClick={handlePlay}>
+                  <button onClick={handlePlay} className="cursor-pointer">
                     <Image
                       src={"/svgs/primary-play-button.svg"}
                       width={50}

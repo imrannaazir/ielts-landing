@@ -118,7 +118,7 @@ export interface FaqValue {
   question: string;
 }
 
-export type Language = 'en' |'bn';
+export type Language = "en" | "bn";
 export interface Section {
   type: string;
   name: string;
@@ -139,6 +139,26 @@ export interface Section {
   )[];
 }
 
+export interface MetaTag {
+  content: string;
+  type: "property" | "name";
+  value: string;
+}
+
+export interface SchemaItem {
+  meta_name: "ld-json";
+  meta_value: string;
+  type: "ld-json";
+}
+
+export interface SEOData {
+  defaultMeta: MetaTag[];
+  description: string;
+  keywords: string[];
+  schema: SchemaItem[];
+  title: string;
+}
+
 export interface CourseData {
   slug: string;
   id: number;
@@ -151,7 +171,7 @@ export interface CourseData {
   start_at: string;
   media: Media[];
   checklist: ChecklistItem[];
-  seo: any[];
+  seo: SEOData;
   cta_text: CtaText;
   sections: Section[];
   is_cohort_based_course: boolean;

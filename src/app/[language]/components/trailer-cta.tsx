@@ -75,22 +75,22 @@ const TrailerAndCTA: FC<TrailerAndCTAProps> = ({
               ))}
             </ul>
           </div>
-
-          {/* Contact Section */}
-          <p className="hidden md:flex md:flex-col lg:flex-row justify-between mt-4 text-sm text-center text-gray-400 px-4">
-            <span>
-              {language === "bn"
-                ? "কোর্সটি সম্পর্কে বিস্তারিত জানতে"
-                : "To know more about the course"}
-            </span>
-            <span className="flex items-center justify-center ml-2 underline cursor-pointer text-green">
-              <Phone />
-              <span className="ml-1">
-                {language === "bn" ? "ফোন করুন" : "Call us"} (16910)
-              </span>
-            </span>
-          </p>
         </div>
+
+        {/* Contact Section */}
+        <p className="hidden md:flex md:flex-col lg:flex-row justify-between mt-4 text-sm text-center text-gray-400 px-4">
+          <span>
+            {language === "bn"
+              ? "কোর্সটি সম্পর্কে বিস্তারিত জানতে"
+              : "To know more about the course"}
+          </span>
+          <span className="flex items-center justify-center ml-2 underline cursor-pointer text-primary">
+            <Phone className="w-4 h-4" />
+            <span className="ml-1 ">
+              {language === "bn" ? "ফোন করুন" : "Call us"} (16910)
+            </span>
+          </span>
+        </p>
       </div>
     </section>
   );

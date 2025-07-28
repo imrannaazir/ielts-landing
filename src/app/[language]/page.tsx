@@ -1,6 +1,7 @@
 import { fetchIELTSCourse } from "@/actions";
 import Container from "@/components/layout/container";
-import { ApiResponse, Language } from "@/types";
+import { Language } from "@/types";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 import CourseDetails from "./components/course-details";
 import CourseInstructor from "./components/course-instructor";
@@ -11,6 +12,7 @@ import TrailerAndCTA from "./components/trailer-cta";
 import WhatWillLearn from "./components/what-will-learn";
 
 const languages = ["bn", "en"];
+
 type CoursePageProps = {
   params: Promise<{ language: Language }>;
 };
@@ -18,9 +20,28 @@ type CoursePageProps = {
 export function generateStaticParams() {
   return languages.map((language) => ({ language }));
 }
+
+export async function generateMetadata(
+  { params }: CoursePageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const language = (await params).language;
+  const courseData = await fetchIELTSCourse(language);
+  const seoData = courseData.data.seo;
+
+  return {
+    title: seoData.title,
+    description: seoData.description,
+    keywords: seoData.keywords,
+    openGraph: {
+      locale: language === "en" ? "en_US" : "bn_BD",
+    },
+  };
+}
+
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
   const language = (await params).language;
-  const courseData: ApiResponse = await fetchIELTSCourse(language);
+  const courseData = await fetchIELTSCourse(language);
 
   // instructor data
   const instructor = courseData.data.sections.find(
@@ -70,6 +91,17 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
           ctaText={courseData.data.cta_text.name}
         />
       </Container>
+
+      {/* Adding JSON-LD */}
+      {courseData.data.seo.schema.map((item, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(item).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
     </main>
   );
 };

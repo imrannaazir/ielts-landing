@@ -15,9 +15,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* middle */}
-        <div>middle</div>
-
         {/* last nav */}
         <ToggleLanguage />
       </Container>
