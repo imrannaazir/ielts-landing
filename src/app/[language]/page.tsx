@@ -28,13 +28,34 @@ export async function generateMetadata(
   const language = (await params).language;
   const courseData = await fetchIELTSCourse(language);
   const seoData = courseData.data.seo;
-
+  const resolvedParentMetadata = await parent;
   return {
     title: seoData.title,
     description: seoData.description,
     keywords: seoData.keywords,
     openGraph: {
-      locale: language === "en" ? "en_US" : "bn_BD",
+      title: seoData.defaultMeta.find((m) => m.value === "og:title")?.content,
+      description: seoData.defaultMeta.find((m) => m.value === "og:description")
+        ?.content,
+      type: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      seoData.defaultMeta.find((m) => m.value === "og:type")?.content as any,
+      url: seoData.defaultMeta.find((m) => m.value === "og:url")?.content,
+      locale: seoData.defaultMeta.find((m) => m.value === "og:locale")?.content,
+      images: [
+        {
+          url:
+            seoData.defaultMeta.find((m) => m.value === "og:image")?.content ||
+            "",
+          secureUrl: seoData.defaultMeta.find(
+            (m) => m.value === "og:image:secure_url"
+          )?.content,
+          alt: seoData.defaultMeta.find((m) => m.value === "og:image:alt")
+            ?.content,
+          type: seoData.defaultMeta.find((m) => m.value === "og:image:type")
+            ?.content,
+        },
+        ...(resolvedParentMetadata.openGraph?.images || []),
+      ],
     },
   };
 }
