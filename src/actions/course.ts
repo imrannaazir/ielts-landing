@@ -3,9 +3,12 @@
 import { env } from "@/lib/env";
 import { ApiResponse, Language } from "@/types";
 
-export async function fetchIELTSCourse(lang: Language = "bn"):Promise<ApiResponse> {
+export async function fetchIELTSCourse(
+  lang: Language = "bn"
+): Promise<ApiResponse> {
   try {
     const url = `${env.apiUrl}/products/ielts-course?lang=${lang}`;
+    console.log(url);
 
     const response = await fetch(url, {
       headers: {

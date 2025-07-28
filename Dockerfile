@@ -22,14 +22,13 @@ WORKDIR /app
 # Optional: install tini to handle signals properly
 RUN apk add --no-cache tini
 
-ENV NODE_ENV=production
 
 # Copy only necessary files from previous build
 COPY --from=deps /app/public ./public
 COPY --from=deps /app/.next ./.next
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json ./package.json
-COPY --from=deps /app/next.config.js ./next.config.js
+COPY --from=deps /app/next.config.ts ./next.config.ts
 COPY --from=deps /app/.env ./.env
 
 # Expose port

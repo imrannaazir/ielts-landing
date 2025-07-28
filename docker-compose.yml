@@ -1,8 +1,10 @@
 services:
   app:
-    container_name: 10ms-nextjs-partho
+    container_name: ielts-landing 
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - .env
